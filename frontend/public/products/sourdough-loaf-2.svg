@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 600" role="img" aria-label="Sourdough Loaf">
+<defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fbefd9"/><stop offset="1" stop-color="#f1d6a6"/></linearGradient></defs>
+<rect width="600" height="600" fill="url(#g)"/>
+<circle cx="120" cy="120" r="70" fill="#ffffff" opacity=".35"/>
+<g transform="rotate(12 300 320)"><ellipse cx="300" cy="400" rx="200" ry="36" fill="#e8cdb8"/>
+      <path d="M110 380 C100 250 190 200 300 200 C410 200 500 250 490 380 Z" fill="#d79a52"/>
+      <path d="M200 240 L240 330 M290 220 L320 330 M380 240 L400 330" stroke="#f3d29a" stroke-width="14" stroke-linecap="round" fill="none"/></g>
+<text x="300" y="530" text-anchor="middle" font-family="Georgia, serif" font-size="34" fill="#7a4a35">Sourdough Loaf</text>
+</svg>

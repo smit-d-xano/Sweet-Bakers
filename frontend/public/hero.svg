@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 640" role="img" aria-label="Fresh baked goods">
+<defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fde4ec"/><stop offset="1" stop-color="#f6d9ae"/></linearGradient></defs>
+<rect width="800" height="640" rx="48" fill="url(#g)"/>
+<circle cx="610" cy="130" r="90" fill="#fff" opacity=".4"/><circle cx="130" cy="520" r="70" fill="#fff" opacity=".35"/>
+<ellipse cx="400" cy="500" rx="270" ry="50" fill="#e8cdb8"/>
+<rect x="220" y="320" width="360" height="170" rx="24" fill="#8a5a3a"/><rect x="220" y="320" width="360" height="56" rx="24" fill="#5b3524"/>
+<rect x="220" y="400" width="360" height="16" fill="#fff6e8"/>
+<ellipse cx="400" cy="320" rx="180" ry="38" fill="#f4a9c0"/>
+<circle cx="330" cy="304" r="18" fill="#d9467a"/><circle cx="400" cy="294" r="18" fill="#d9467a"/><circle cx="470" cy="304" r="18" fill="#d9467a"/>
+<path d="M120 500 C112 420 170 390 230 390 C290 390 340 420 330 500Z" fill="#d79a52"/>
+</svg>
