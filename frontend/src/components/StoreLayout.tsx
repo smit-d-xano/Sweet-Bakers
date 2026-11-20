@@ -47,8 +47,7 @@ export function StoreLayout() {
               <>
                 <Button asChild variant="ghost" size="sm">
                   <Link to="/account">
-                    <UserIcon aria-hidden /> <span className="hidden sm:inline">{user.name.split(" ")[0]}</span>
-                    <span className="sm:hidden">Account</span>
+                    <UserIcon aria-hidden /> <span className="max-w-24 truncate">{user.name.split(" ")[0]}</span>
                   </Link>
                 </Button>
                 <Button
