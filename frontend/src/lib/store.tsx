@@ -185,4 +185,4 @@ export function useAsync<T>(fn: () => Promise<T>, deps: unknown[]) {
 }
 
 // The contexts live in this module, so a hot update would split providers from consumers; reload instead.
-if (import.meta.hot) import.meta.hot.accept(() => window.location.reload());
+if (import.meta.hot) import.meta.hot.dispose(() => window.location.reload());
