@@ -1,4 +1,4 @@
-import { table, f } from "@xano/sdk";
+import { table, f, seedFile } from "@xano/sdk";
 import { seed } from "./seed/data.js";
 
 export const users = table({
@@ -87,6 +87,7 @@ export const carts = table({
     coupon_code: f.text({ default: "" }),
   },
   index: [{ type: "unique", fields: [{ name: "user_id" }] }],
+  seed: seedFile("./seed/carts.json", import.meta.url),
 });
 
 export const cartItems = table({
@@ -99,6 +100,7 @@ export const cartItems = table({
     unit_price: f.decimal({ default: 0 }),
   },
   index: [{ type: "btree", fields: [{ name: "cart_id" }] }],
+  seed: seedFile("./seed/cart_items.json", import.meta.url),
 });
 
 export const orders = table({
@@ -202,6 +204,7 @@ export const passwordResets = table({
     used: f.bool({ default: false }),
   },
   index: [{ type: "unique", fields: [{ name: "token_hash" }] }],
+  seed: seedFile("./seed/password_resets.json", import.meta.url),
 });
 
 export const allTables = [
