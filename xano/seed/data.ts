@@ -217,6 +217,33 @@ for (const o of delivered) {
   });
 }
 
+// top up so every product shows at least 4 approved reviews
+for (const p of products) {
+  let have = reviews.filter((r) => r.product_id === p.id && r.is_approved).length;
+  for (const o of delivered) {
+    if (have >= 4) break;
+    if (!o.items.some((it) => it.product.id === p.id)) continue;
+    const key = `${o.user_id}:${p.id}`;
+    if (seenReview.has(key)) continue;
+    seenReview.add(key);
+    const rr = rand();
+    const rating = rr < 0.55 ? 5 : rr < 0.9 ? 4 : 3;
+    reviews.push({
+      id: reviews.length + 1,
+      created_at: o.created_at + 4 * DAY,
+      product_id: p.id,
+      user_id: o.user_id,
+      author_name: users.find((u) => u.id === o.user_id)!.name.replace(/ (\w)\w*$/, " $1."),
+      order_id: o.id,
+      rating,
+      title: pick(reviewTitles[rating]!),
+      body: pick(reviewBodies[rating]!),
+      is_approved: true,
+    });
+    have++;
+  }
+}
+
 // roll the aggregates up onto the products
 for (const p of products) {
   const mine = reviews.filter((r) => r.product_id === p.id && r.is_approved);
