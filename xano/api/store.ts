@@ -129,11 +129,16 @@ const forgotPassword = query({
               ],
             }),
           ],
-          // Demo mode (no email service): hand the token back so the flow can be tried. Never for the owner account.
+          // Without an email service the token is only handed back when DEV_RESET_LINKS is set deliberately (local demos). Never for the owner account.
           else: [
             s.conditional({
-              when: expr(ref("u.role"), "==", c.text("customer")),
-              then: [s.set_var("demo_token", ref("reset_token"))],
+              when: cond.notEmpty(env("DEV_RESET_LINKS")),
+              then: [
+                s.conditional({
+                  when: expr(ref("u.role"), "==", c.text("customer")),
+                  then: [s.set_var("demo_token", ref("reset_token"))],
+                }),
+              ],
             }),
           ],
         }),
