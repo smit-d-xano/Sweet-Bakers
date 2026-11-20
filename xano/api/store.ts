@@ -1,7 +1,7 @@
 import { apiGroup, query, input, f, s, ref, inp, auth, c, col, expr, cmp, obj, withFilters, fl, env, cond, guard, sys } from "@xano/sdk";
 import { lam } from "@xano/sdk/node";
 import {
-  users, addresses, carts, cartItems, categories, products, productVariants, orders, orderItems, payments, reviews,
+  users, addresses, carts, cartItems, categories, products, productVariants, orders, orderItems, payments, reviews, passwordResets,
 } from "../tables.js";
 import { priceCart, fulfillPayment, failPayment, reviewEligibility } from "../functions.js";
 
@@ -84,6 +84,98 @@ const me = query({
   auth: users,
   stack: [s.db.get({ table: users, fieldValue: auth("id"), output: ["id", "name", "email", "phone", "role", "created_at"], as: "user" })],
   response: ref("user"),
+});
+
+const forgotPassword = query({
+  name: "auth/forgot_password",
+  verb: "POST",
+  apiGroup: storeApi,
+  input: { email: input.text({ required: true }) },
+  stack: [
+    s.set_var("email", withFilters(inp("email"), fl.trim(), fl.lower())),
+    s.set_var("demo_token", c.text("")),
+    s.db.get({ table: users, fieldName: "email", fieldValue: ref("email"), output: ["id", "name", "email", "role"], as: "u" }),
+    s.conditional({
+      when: expr(ref("u", { safe: true }), "!=", c.null()),
+      then: [
+        s.security.random_bytes({ length: c.int(32), as: "raw" }),
+        s.set_var("reset_token", withFilters(ref("raw"), fl.bin2hex())),
+        s.set_var("expires", withFilters(c.now(), fl.add(3600000))),
+        s.db.add({
+          table: passwordResets,
+          row: { user_id: ref("u.id"), token_hash: withFilters(ref("reset_token"), fl.sha256()), expires_at: ref("expires"), used: false },
+          output: ["id"],
+          as: "pr",
+        }),
+        s.conditional({
+          when: cond.notEmpty(env("RESEND_API_KEY")),
+          then: [
+            s.conditional({
+              when: cond.notEmpty(env("APP_URL")),
+              then: [
+                s.set_var("base_url", env("APP_URL")),
+                s.set_var("op", c.text("reset_email")),
+                s.set_var("user", ref("u")),
+                s.lambda({ as: "mail", code: lam.file("../lambdas/helpers.ts") }),
+                s.util.send_email({
+                  service_provider: "resend",
+                  api_key: env("RESEND_API_KEY"),
+                  to: ref("u.email"),
+                  from: c.text("SweetBakers <orders@sweetbakers.example>"),
+                  subject: ref("mail.subject"),
+                  message: ref("mail.message"),
+                  as: "mail_result",
+                }),
+              ],
+            }),
+          ],
+          // Demo mode (no email service): hand the token back so the flow can be tried. Never for the owner account.
+          else: [
+            s.conditional({
+              when: expr(ref("u.role"), "==", c.text("customer")),
+              then: [s.set_var("demo_token", ref("reset_token"))],
+            }),
+          ],
+        }),
+      ],
+    }),
+  ],
+  response: { ok: c.bool(true), reset_token: ref("demo_token") },
+});
+
+const resetPassword = query({
+  name: "auth/reset_password",
+  verb: "POST",
+  apiGroup: storeApi,
+  input: { token: input.text({ required: true }), password: input.text({ required: true }) },
+  stack: [
+    s.precondition({
+      expr: expr(withFilters(inp("password"), fl.strlen()), ">=", c.int(8)),
+      error: c.text("Password must be at least 8 characters."),
+      error_type: "inputerror",
+    }),
+    s.set_var("hash", withFilters(inp("token"), fl.trim(), fl.sha256())),
+    s.db.get({ table: passwordResets, fieldName: "token_hash", fieldValue: ref("hash"), as: "pr" }),
+    s.set_var("now_ms", c.now()),
+    s.precondition({
+      expr: expr(ref("pr", { safe: true }), "!=", c.null()),
+      error: c.text("This reset link is invalid or has expired."),
+      error_type: "inputerror",
+    }),
+    s.precondition({
+      expr: expr(ref("pr.used"), "==", c.bool(false)),
+      error: c.text("This reset link is invalid or has expired."),
+      error_type: "inputerror",
+    }),
+    s.precondition({
+      expr: expr(ref("pr.expires_at"), ">", ref("now_ms")),
+      error: c.text("This reset link is invalid or has expired."),
+      error_type: "inputerror",
+    }),
+    s.db.edit({ table: users, fieldValue: ref("pr.user_id"), row: { password: inp("password") } }),
+    s.db.edit({ table: passwordResets, fieldValue: ref("pr.id"), row: { used: true } }),
+  ],
+  response: { ok: c.bool(true) },
 });
 
 const updateProfile = query({
@@ -657,7 +749,7 @@ const deleteAddress = query({
 });
 
 export const storeQueries = [
-  signup, login, me, updateProfile, storeConfig, listCategories, listProducts, productDetail, productReviews, home,
+  signup, login, forgotPassword, resetPassword, me, updateProfile, storeConfig, listCategories, listProducts, productDetail, productReviews, home,
   cartQuote, applyCoupon, getCart, saveCart, checkout, demoPayment, stripeWebhook, listOrders, orderDetail,
   eligibility, createReview, listAddresses, createAddress, updateAddress, deleteAddress,
 ];

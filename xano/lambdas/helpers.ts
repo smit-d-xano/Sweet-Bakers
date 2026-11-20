@@ -61,5 +61,12 @@ export default function ({ $var }: { $var: Any }) {
       message: `<h2>Thank you, ${$var.user.name}!</h2><p>We received your payment for order <strong>${o.order_number}</strong>.</p><ul>${lines}</ul><p>Subtotal $${Number(o.subtotal).toFixed(2)}<br>Discount -$${Number(o.discount).toFixed(2)}<br>Tax $${Number(o.tax).toFixed(2)}<br>Delivery $${Number(o.delivery_fee).toFixed(2)}<br><strong>Total $${Number(o.total).toFixed(2)}</strong></p><p>${when}</p><p>With love, SweetBakers</p>`,
     };
   }
+  if ($var.op === "reset_email") {
+    const link = `${String($var.base_url).replace(/\/+$/, "")}/reset-password?token=${$var.reset_token}`;
+    return {
+      subject: "Reset your SweetBakers password",
+      message: `<h2>Hi ${$var.user.name},</h2><p>We got a request to reset your password. This link works for one hour:</p><p><a href="${link}">Choose a new password</a></p><p>If this wasn't you, you can ignore this email.</p><p>With love, SweetBakers</p>`,
+    };
+  }
   return {};
 }

@@ -192,7 +192,19 @@ export const coupons = table({
   seed: seed.coupons as never,
 });
 
+// Only the SHA-256 of a reset token is stored; the token itself goes to the shopper.
+export const passwordResets = table({
+  name: "password_resets",
+  schema: {
+    user_id: f.tableRef(users, { required: true }),
+    token_hash: f.text({ required: true }),
+    expires_at: f.int({ required: true }),
+    used: f.bool({ default: false }),
+  },
+  index: [{ type: "unique", fields: [{ name: "token_hash" }] }],
+});
+
 export const allTables = [
   users, addresses, categories, products, productVariants, carts, cartItems,
-  orders, orderItems, payments, reviews, coupons,
+  orders, orderItems, payments, reviews, coupons, passwordResets,
 ];

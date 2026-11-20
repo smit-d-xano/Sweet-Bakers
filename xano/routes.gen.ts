@@ -86,8 +86,10 @@ export const ROUTES = {
   "POST addresses": { verb: "POST", path: "/api:sweetbakers/addresses" },
   "DELETE addresses/{id}": { verb: "DELETE", path: "/api:sweetbakers/addresses/{id}" },
   "PUT addresses/{id}": { verb: "PUT", path: "/api:sweetbakers/addresses/{id}" },
+  "POST auth/forgot_password": { verb: "POST", path: "/api:sweetbakers/auth/forgot_password" },
   "POST auth/login": { verb: "POST", path: "/api:sweetbakers/auth/login" },
   "GET auth/me": { verb: "GET", path: "/api:sweetbakers/auth/me" },
+  "POST auth/reset_password": { verb: "POST", path: "/api:sweetbakers/auth/reset_password" },
   "POST auth/signup": { verb: "POST", path: "/api:sweetbakers/auth/signup" },
   "GET cart": { verb: "GET", path: "/api:sweetbakers/cart" },
   "PUT cart": { verb: "PUT", path: "/api:sweetbakers/cart" },
@@ -148,8 +150,10 @@ export function routePath(name: "GET addresses"): string;
 export function routePath(name: "POST addresses"): string;
 export function routePath(name: "DELETE addresses/{id}", params: { "id": string | number }): string;
 export function routePath(name: "PUT addresses/{id}", params: { "id": string | number }): string;
+export function routePath(name: "POST auth/forgot_password"): string;
 export function routePath(name: "POST auth/login"): string;
 export function routePath(name: "GET auth/me"): string;
+export function routePath(name: "POST auth/reset_password"): string;
 export function routePath(name: "POST auth/signup"): string;
 export function routePath(name: "GET cart"): string;
 export function routePath(name: "PUT cart"): string;
@@ -306,11 +310,18 @@ export type RouteInputs = {
     postal_code: string;
     is_default?: boolean;
   };
+  "POST auth/forgot_password": {
+    email: string;
+  };
   "POST auth/login": {
     email: string;
     password: string;
   };
   "GET auth/me": {};
+  "POST auth/reset_password": {
+    token: string;
+    password: string;
+  };
   "POST auth/signup": {
     name: string;
     email: string;
