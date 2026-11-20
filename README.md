@@ -62,7 +62,7 @@ or the demo payment confirms success. Failed or cancelled payments keep the cart
   the admin panel.
 
 <!-- BEGIN:xanosdk-built-with -->
-<!-- xanosdk 1.0.21 — generated; edits inside this block are overwritten -->
+<!-- xanosdk 1.0.26 — generated; edits inside this block are overwritten -->
 
 ## Built with
 
