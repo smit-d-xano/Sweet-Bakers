@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useAuth } from "@/lib/store";
 import { Field } from "@/components/common";
+import { PasswordInput } from "@/components/PasswordInput";
 
 const DEV_USER = import.meta.env.VITE_XANO_SAMPLE_USER as string | undefined;
 const DEV_TOKEN = import.meta.env.VITE_XANO_SAMPLE_TOKEN as string | undefined;
@@ -47,9 +48,8 @@ export default function AuthPage({ mode }: { mode: "login" | "signup" }) {
           <Input id="au-email" type="email" required value={email} onChange={(e) => setEmail(e.target.value)} autoComplete="email" />
         </Field>
         <Field label="Password" htmlFor="au-pw" hint={mode === "signup" ? "At least 8 characters." : undefined}>
-          <Input
+          <PasswordInput
             id="au-pw"
-            type="password"
             required
             minLength={mode === "signup" ? 8 : undefined}
             value={password}
@@ -57,6 +57,11 @@ export default function AuthPage({ mode }: { mode: "login" | "signup" }) {
             autoComplete={mode === "login" ? "current-password" : "new-password"}
           />
         </Field>
+        {mode === "login" && (
+          <div className="-mt-2 text-right text-sm">
+            <Link to="/forgot-password" className="text-primary underline">Forgot password?</Link>
+          </div>
+        )}
         {mode === "signup" && (
           <Field label="Phone (optional)" htmlFor="au-phone">
             <Input id="au-phone" type="tel" value={phone} onChange={(e) => setPhone(e.target.value)} autoComplete="tel" />
