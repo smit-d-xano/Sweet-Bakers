@@ -29,33 +29,13 @@ export function StoreLayout() {
           <Link to="/" className="flex items-center gap-2 font-display text-xl font-semibold text-primary">
             <Cake className="size-6 text-chart-2" aria-hidden /> SweetBakers
           </Link>
-          <nav className="ml-4 hidden items-center gap-1 md:flex" aria-label="Main">
-            {nav.map((n) => (
-              <NavLink key={n.to} to={n.to} end={n.end} className={link}>
-                {n.label}
-              </NavLink>
-            ))}
-          </nav>
           <div className="ml-auto flex items-center gap-2">
             {user ? (
-              <>
-                <Button asChild variant="ghost" size="sm">
-                  <Link to="/account">
-                    <UserIcon aria-hidden /> <span className="max-w-24 truncate">{user.name.split(" ")[0]}</span>
-                  </Link>
-                </Button>
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  className="hidden sm:inline-flex"
-                  onClick={() => {
-                    logout();
-                    navigate("/");
-                  }}
-                >
-                  Sign out
-                </Button>
-              </>
+              <Button asChild variant="ghost" size="sm">
+                <Link to="/account">
+                  <UserIcon aria-hidden /> <span className="max-w-24 truncate">{user.name.split(" ")[0]}</span>
+                </Link>
+              </Button>
             ) : (
               <Button asChild variant="ghost" size="sm">
                 <Link to="/login">Sign in</Link>
@@ -67,13 +47,13 @@ export function StoreLayout() {
                 {count > 0 && <span className="ml-1 rounded-full bg-secondary px-1.5 text-xs text-secondary-foreground">{count}</span>}
               </Link>
             </Button>
-            <Button variant="ghost" size="icon" className="md:hidden" aria-label="Menu" aria-expanded={open} onClick={() => setOpen((o) => !o)}>
+            <Button variant="ghost" size="icon" aria-label="Menu" aria-expanded={open} onClick={() => setOpen((o) => !o)}>
               {open ? <X /> : <Menu />}
             </Button>
           </div>
         </div>
         {open && (
-          <nav className="flex flex-col gap-1 border-t px-4 py-3 md:hidden" aria-label="Mobile">
+          <nav className="mx-auto flex max-w-6xl flex-col gap-1 border-t px-4 py-3" aria-label="Menu">
             {nav.map((n) => (
               <NavLink key={n.to} to={n.to} end={n.end} className={link} onClick={() => setOpen(false)}>
                 {n.label}
