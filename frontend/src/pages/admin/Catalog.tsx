@@ -82,7 +82,21 @@ export function AdminProducts() {
                     </div>
                   </td>
                   <td className="p-3">{money(p.price)}</td>
-                  <td className={`p-3 ${p.stock_qty < 10 ? "font-semibold text-destructive" : ""}`}>{p.stock_qty}</td>
+                  <td className="p-3">
+                    <Input
+                      key={`${p.id}-${p.stock_qty}`}
+                      type="number"
+                      min="0"
+                      step="1"
+                      aria-label={`Stock for ${p.name}`}
+                      className={`h-8 w-20 ${p.stock_qty < 10 ? "font-semibold text-destructive" : ""}`}
+                      defaultValue={p.stock_qty}
+                      onBlur={(e) => {
+                        const n = Math.max(0, Math.floor(Number(e.target.value)));
+                        if (Number.isFinite(n) && n !== p.stock_qty) patch(p, { stock_qty: n });
+                      }}
+                    />
+                  </td>
                   <td className="p-3"><input type="checkbox" className="size-4 accent-primary" aria-label={`${p.name} available`} checked={p.is_available} onChange={(e) => patch(p, { is_available: e.target.checked })} /></td>
                   <td className="p-3"><input type="checkbox" className="size-4 accent-primary" aria-label={`${p.name} featured`} checked={p.is_featured} onChange={(e) => patch(p, { is_featured: e.target.checked })} /></td>
                   <td className="space-x-2 p-3 text-right">

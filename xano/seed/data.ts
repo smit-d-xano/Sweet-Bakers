@@ -94,9 +94,7 @@ const addresses = addressDefs.map(([user_id, line1, line2, city, state, postal_c
 }));
 
 const coupons = [
-  { id: 1, code: "WELCOME10", type: "percent", value: 10, min_order: 15, valid_from: now - 400 * DAY, valid_to: now + 365 * DAY, usage_limit: 1000, is_active: true },
-  { id: 2, code: "SWEET5", type: "flat", value: 5, min_order: 30, valid_from: now - 400 * DAY, valid_to: now + 365 * DAY, usage_limit: 0, is_active: true },
-  { id: 3, code: "SUMMER20", type: "percent", value: 20, min_order: 40, valid_from: now - 200 * DAY, valid_to: now - 30 * DAY, usage_limit: 100, is_active: true },
+  { id: 1, code: "BIGORDER20", type: "percent", value: 20, min_order: 1000, valid_from: now - 400 * DAY, valid_to: now + 365 * DAY, usage_limit: 0, is_active: true },
 ];
 
 const SLOTS = ["09:00 - 12:00", "12:00 - 15:00", "15:00 - 18:00"];
@@ -128,10 +126,10 @@ for (let i = 0; i < N_ORDERS; i++) {
   let status: string;
   const r = rand();
   if (age > 4) status = r < 0.88 ? "delivered" : r < 0.94 ? "cancelled" : "refunded";
-  else status = pick(["pending", "paid", "paid", "preparing", "out_for_delivery", "delivered", "delivered"]);
+  else status = pick(["pending", "paid", "paid", "delivered", "delivered"]);
 
   const subtotal = round2(lines.reduce((s, it) => s + (it.product.price + (it.variant?.price_delta ?? 0)) * it.qty, 0));
-  const coupon = rand() < 0.12 ? coupons[0]! : null;
+  const coupon = null as (typeof coupons)[number] | null;
   const discount = coupon ? round2((subtotal * coupon.value) / 100) : 0;
   const delivery_type = rand() < 0.6 ? "delivery" : "pickup";
   const delivery_fee = delivery_type === "delivery" && subtotal < 50 ? 5 : 0;

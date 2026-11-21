@@ -6,11 +6,8 @@ import { useAuth } from "@/lib/store";
 import { Field } from "@/components/common";
 import { PasswordInput } from "@/components/PasswordInput";
 
-const DEV_USER = import.meta.env.VITE_XANO_SAMPLE_USER as string | undefined;
-const DEV_TOKEN = import.meta.env.VITE_XANO_SAMPLE_TOKEN as string | undefined;
-
 export default function AuthPage({ mode }: { mode: "login" | "signup" }) {
-  const { login, signup, signInWithToken } = useAuth();
+  const { login, signup } = useAuth();
   const navigate = useNavigate();
   const [params] = useSearchParams();
   const next = params.get("next") || "/";
@@ -76,23 +73,6 @@ export default function AuthPage({ mode }: { mode: "login" | "signup" }) {
           {busy ? "Please wait…" : mode === "login" ? "Sign in" : "Create account"}
         </Button>
       </form>
-      {import.meta.env.DEV && DEV_TOKEN && (
-        <Button
-          type="button"
-          variant="outline"
-          className="w-full"
-          onClick={async () => {
-            try {
-              const u = await signInWithToken(DEV_TOKEN);
-              navigate(u.role === "admin" ? "/admin" : next, { replace: true });
-            } catch {
-              setError("The sample sign-in token was not accepted. Redeploy the backend and reload.");
-            }
-          }}
-        >
-          Sign in as {DEV_USER ?? "sample user"}
-        </Button>
-      )}
       <p className="text-center text-sm text-muted-foreground">
         {mode === "login" ? (
           <>

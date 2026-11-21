@@ -48,6 +48,7 @@ export interface Order {
 export interface OrderItem { id: number; product_id: number; variant_id: number; name_snapshot: string; unit_price: number; quantity: number; line_total: number }
 export interface Payment { id: number; provider: string; provider_ref: string; amount: number; status: string }
 export interface Address { id: number; line1: string; line2: string; city: string; state: string; postal_code: string; is_default: boolean }
+export interface Customer { id: number; name: string; email: string; phone: string; created_at: number; order_count: number; total_spent: number; last_order_at: number | null }
 export interface Coupon {
   id: number; code: string; type: "percent" | "flat"; value: number; min_order: number; valid_from: number | null;
   valid_to: number | null; usage_limit: number; used_count?: number; is_active: boolean;
@@ -62,7 +63,7 @@ export interface Dashboard {
   kpis: { revenue: Metric; orders: Metric; avg_order_value: Metric; new_customers: Metric; items_sold: Metric; cancelled_refunded: Metric };
   revenue_series: { label: string; revenue: number; previous: number; orders: number }[];
   orders_by_status: { status: string; count: number }[];
-  sales_by_category: { name: string; revenue: number; quantity: number }[];
+  sales_by_category: { category: string; revenue: number; quantity: number }[];
   top_products_by_revenue: { name: string; revenue: number; quantity: number }[];
   top_products_by_quantity: { name: string; revenue: number; quantity: number }[];
   latest_orders: Order[];
@@ -199,6 +200,7 @@ export const api = {
   setReviewApproval: (id: number, approved: boolean) => call<Review>("PUT admin/reviews/{id}/approval", { params: { id }, body: { approved } }),
   deleteReview: (id: number) => call<{ deleted: boolean }>("DELETE admin/reviews/{id}", { params: { id } }),
   coupons: () => call<Coupon[]>("GET admin/coupons"),
+  customers: () => call<Customer[]>("GET admin/customers"),
   createCoupon: (b: Record<string, unknown>) => call<Coupon>("POST admin/coupons", { body: b }),
   updateCoupon: (id: number, b: Record<string, unknown>) => call<Coupon>("PUT admin/coupons/{id}", { params: { id }, body: b }),
   deleteCoupon: (id: number) => call<{ deleted: boolean }>("DELETE admin/coupons/{id}", { params: { id } }),

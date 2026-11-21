@@ -12,8 +12,8 @@ export default function ({ $var }: { $var: Any }) {
   if ($var.op === "transition") {
     const next: Record<string, string[]> = {
       pending: ["cancelled"],
-      paid: ["preparing", "cancelled"],
-      preparing: ["out_for_delivery", "delivered", "cancelled"],
+      paid: ["delivered", "cancelled"],
+      preparing: ["delivered", "cancelled"],
       out_for_delivery: ["delivered"],
       delivered: [],
       cancelled: [],
@@ -60,6 +60,22 @@ export default function ({ $var }: { $var: Any }) {
       subject: `Your SweetBakers order ${o.order_number} is confirmed`,
       message: `<h2>Thank you, ${$var.user.name}!</h2><p>We received your payment for order <strong>${o.order_number}</strong>.</p><ul>${lines}</ul><p>Subtotal $${Number(o.subtotal).toFixed(2)}<br>Discount -$${Number(o.discount).toFixed(2)}<br>Tax $${Number(o.tax).toFixed(2)}<br>Delivery $${Number(o.delivery_fee).toFixed(2)}<br><strong>Total $${Number(o.total).toFixed(2)}</strong></p><p>${when}</p><p>With love, SweetBakers</p>`,
     };
+  }
+  if ($var.op === "customers") {
+    const spent: Record<string, { n: number; total: number; last: number }> = {};
+    for (const o of ($var.orders as Any[]) || []) {
+      if (!["paid", "preparing", "out_for_delivery", "delivered"].includes(o.status)) continue;
+      const e = (spent[o.user_id] ||= { n: 0, total: 0, last: 0 });
+      e.n += 1;
+      e.total += Number(o.total);
+      e.last = Math.max(e.last, Number(o.created_at));
+    }
+    const rows = (($var.users as Any[]) || []).map((u) => {
+      const e = spent[u.id] || { n: 0, total: 0, last: 0 };
+      return { id: u.id, name: u.name, email: u.email, phone: u.phone, created_at: u.created_at, order_count: e.n, total_spent: Math.round(e.total * 100) / 100, last_order_at: e.last || null };
+    });
+    rows.sort((a, b) => b.total_spent - a.total_spent);
+    return { rows };
   }
   if ($var.op === "reset_email") {
     const link = `${String($var.base_url).replace(/\/+$/, "")}/reset-password?token=${$var.reset_token}`;

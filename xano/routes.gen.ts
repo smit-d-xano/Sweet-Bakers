@@ -116,6 +116,7 @@ export const ROUTES = {
   "POST admin/coupons": { verb: "POST", path: "/api:sweetbakers-admin/admin/coupons" },
   "DELETE admin/coupons/{id}": { verb: "DELETE", path: "/api:sweetbakers-admin/admin/coupons/{id}" },
   "PUT admin/coupons/{id}": { verb: "PUT", path: "/api:sweetbakers-admin/admin/coupons/{id}" },
+  "GET admin/customers": { verb: "GET", path: "/api:sweetbakers-admin/admin/customers" },
   "GET admin/dashboard/summary": { verb: "GET", path: "/api:sweetbakers-admin/admin/dashboard/summary" },
   "GET admin/orders": { verb: "GET", path: "/api:sweetbakers-admin/admin/orders" },
   "GET admin/orders/{id}": { verb: "GET", path: "/api:sweetbakers-admin/admin/orders/{id}" },
@@ -180,6 +181,7 @@ export function routePath(name: "GET admin/coupons"): string;
 export function routePath(name: "POST admin/coupons"): string;
 export function routePath(name: "DELETE admin/coupons/{id}", params: { "id": string | number }): string;
 export function routePath(name: "PUT admin/coupons/{id}", params: { "id": string | number }): string;
+export function routePath(name: "GET admin/customers"): string;
 export function routePath(name: "GET admin/dashboard/summary"): string;
 export function routePath(name: "GET admin/orders"): string;
 export function routePath(name: "GET admin/orders/{id}", params: { "id": string | number }): string;
@@ -450,6 +452,7 @@ export type RouteInputs = {
     usage_limit?: number;
     is_active?: boolean;
   };
+  "GET admin/customers": {};
   "GET admin/dashboard/summary": {
     period?: string;
     from?: string;
@@ -471,7 +474,7 @@ export type RouteInputs = {
   };
   "PUT admin/orders/{id}/status": {
     id: number;
-    status: "preparing" | "out_for_delivery" | "delivered" | "cancelled";
+    status: "delivered" | "cancelled";
   };
   "GET admin/products": {
     q?: string;

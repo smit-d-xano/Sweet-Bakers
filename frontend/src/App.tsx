@@ -15,6 +15,7 @@ import { ForgotPassword, ResetPassword } from "@/pages/PasswordReset";
 import Account, { OrderDetail } from "@/pages/Account";
 import { AdminLayout } from "@/pages/admin/AdminLayout";
 import Dashboard from "@/pages/admin/Dashboard";
+import { AdminCustomers } from "@/pages/admin/Customers";
 import { AdminCategories, AdminProductForm, AdminProducts } from "@/pages/admin/Catalog";
 import { AdminCoupons, AdminOrderDetail, AdminOrders, AdminReviews } from "@/pages/admin/Sales";
 
@@ -65,6 +66,7 @@ export default function App() {
               <Route index element={<Dashboard />} />
               <Route path="orders" element={<AdminOrders />} />
               <Route path="orders/:id" element={<AdminOrderDetail />} />
+              <Route path="customers" element={<AdminCustomers />} />
               <Route path="products" element={<AdminProducts />} />
               <Route path="products/:id" element={<AdminProductForm />} />
               <Route path="categories" element={<AdminCategories />} />

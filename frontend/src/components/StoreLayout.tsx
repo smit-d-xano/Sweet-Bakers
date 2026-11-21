@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link, NavLink, Outlet, useNavigate } from "react-router-dom";
+import { Link, NavLink, Navigate, Outlet, useNavigate } from "react-router-dom";
 import { Cake, LayoutDashboard, Menu, ShoppingBag, User as UserIcon, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useAuth, useCart } from "@/lib/store";
@@ -15,6 +15,7 @@ export function StoreLayout() {
   const { count } = useCart();
   const navigate = useNavigate();
   const [open, setOpen] = useState(false);
+  if (user?.role === "admin") return <Navigate to="/admin" replace />;
   const link = ({ isActive }: { isActive: boolean }) =>
     cn("rounded-full px-3 py-1.5 text-sm font-medium transition hover:bg-accent", isActive && "bg-accent text-accent-foreground");
 
@@ -36,13 +37,6 @@ export function StoreLayout() {
             ))}
           </nav>
           <div className="ml-auto flex items-center gap-2">
-            {user?.role === "admin" && (
-              <Button asChild variant="outline" size="sm" className="hidden sm:inline-flex">
-                <Link to="/admin">
-                  <LayoutDashboard aria-hidden /> Admin
-                </Link>
-              </Button>
-            )}
             {user ? (
               <>
                 <Button asChild variant="ghost" size="sm">
@@ -85,11 +79,6 @@ export function StoreLayout() {
                 {n.label}
               </NavLink>
             ))}
-            {user?.role === "admin" && (
-              <NavLink to="/admin" className={link} onClick={() => setOpen(false)}>
-                Admin
-              </NavLink>
-            )}
             {user && (
               <button
                 className="rounded-full px-3 py-1.5 text-left text-sm font-medium hover:bg-accent"

@@ -306,7 +306,7 @@ const adminSetStatus = query({
   verb: "PUT",
   apiGroup: adminApi,
   auth: users,
-  input: { id: input.int({ required: true }), status: input.enum(["preparing", "out_for_delivery", "delivered", "cancelled"], { required: true }) },
+  input: { id: input.int({ required: true }), status: input.enum(["delivered", "cancelled"], { required: true }) },
   stack: [
     ...admin(),
     s.db.get({ table: orders, fieldValue: inp("id"), as: "order" }),
@@ -541,6 +541,21 @@ const adminDeleteCoupon = query({
   response: { deleted: c.bool(true) },
 });
 
+const adminListCustomers = query({
+  name: "admin/customers",
+  verb: "GET",
+  apiGroup: adminApi,
+  auth: users,
+  stack: [
+    ...admin(),
+    s.db.query({ table: users, where: expr(col("role"), "=", c.text("customer")), output: ["id", "name", "email", "phone", "created_at"], as: "users" }),
+    s.db.query({ table: orders, as: "orders" }),
+    s.set_var("op", c.text("customers")),
+    s.lambda({ as: "res", code: helpers }),
+  ],
+  response: ref("res.rows"),
+});
+
 // ---------- dashboard ----------
 
 const dashboardSummary = query({
@@ -596,7 +611,7 @@ export const adminQueries = [
   adminCreateCategory, adminUpdateCategory, adminDeleteCategory,
   adminListOrders, adminOrderDetail, adminSetStatus, adminRefund,
   adminListReviews, adminSetReviewApproval, adminDeleteReview,
-  adminListCoupons, adminCreateCoupon, adminUpdateCoupon, adminDeleteCoupon,
+  adminListCoupons, adminCreateCoupon, adminUpdateCoupon, adminDeleteCoupon, adminListCustomers,
   dashboardSummary,
 ];
 void auth;

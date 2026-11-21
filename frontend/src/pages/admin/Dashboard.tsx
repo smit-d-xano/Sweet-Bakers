@@ -209,11 +209,8 @@ export default function Dashboard() {
           </Card>
 
           <div className="grid gap-6 lg:grid-cols-2">
-            <Card title="Orders by status">
-              <Bars rows={data.orders_by_status.map((s) => ({ label: s.status.replace(/_/g, " "), value: s.count }))} fmt={(n) => String(n)} />
-            </Card>
             <Card title="Sales by category">
-              <Bars rows={data.sales_by_category.map((s) => ({ label: s.name, value: s.revenue }))} fmt={money} />
+              <Bars rows={data.sales_by_category.map((s) => ({ label: s.category, value: s.revenue }))} fmt={money} />
             </Card>
             <Card title="Top 10 products by revenue">
               <TopTable rows={data.top_products_by_revenue} by="revenue" />
@@ -223,20 +220,7 @@ export default function Dashboard() {
             </Card>
           </div>
 
-          <div className="grid gap-6 lg:grid-cols-3">
-            <Card title="Latest orders">
-              <ul className="space-y-2 text-sm">
-                {data.latest_orders.map((o) => (
-                  <li key={o.id} className="flex items-center justify-between gap-2">
-                    <span>
-                      <span className="font-medium">{o.order_number}</span>
-                      <span className="block text-xs text-muted-foreground">{fmtDate(o.created_at)}</span>
-                    </span>
-                    <span className="flex items-center gap-2"><StatusBadge status={o.status} />{money(o.total)}</span>
-                  </li>
-                ))}
-              </ul>
-            </Card>
+          <div className="grid gap-6 lg:grid-cols-2">
             <Card title="Low stock">
               {data.low_stock.length === 0 ? (
                 <p className="text-sm text-muted-foreground">Everything is well stocked.</p>

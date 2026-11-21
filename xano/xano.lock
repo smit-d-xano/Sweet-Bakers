@@ -86,6 +86,9 @@
     "query:sweetbakers_admin|GET|admin/coupons": {
       "guid": "999e16a20ad8fb7322e22195e51fb3b5"
     },
+    "query:sweetbakers_admin|GET|admin/customers": {
+      "guid": "dc85a2b5f570f9662e6a1c3d040853fd"
+    },
     "query:sweetbakers_admin|GET|admin/dashboard/summary": {
       "guid": "6ae065478bc3356d335d5a6e9ae953ef"
     },

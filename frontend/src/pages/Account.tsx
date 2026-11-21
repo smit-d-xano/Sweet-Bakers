@@ -87,7 +87,7 @@ function Orders() {
   );
 }
 
-const STEPS = ["paid", "preparing", "out_for_delivery", "delivered"] as const;
+const STEPS = ["paid", "delivered"] as const;
 
 export function OrderDetail() {
   const { orderNumber = "" } = useParams();

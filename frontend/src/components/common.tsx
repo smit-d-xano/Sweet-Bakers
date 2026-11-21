@@ -79,8 +79,8 @@ export function ProductCard({ p }: { p: Product }) {
 export const STATUS_LABEL: Record<OrderStatus, string> = {
   pending: "Pending payment",
   paid: "Paid",
-  preparing: "Preparing",
-  out_for_delivery: "Out for delivery",
+  preparing: "Paid",
+  out_for_delivery: "Paid",
   delivered: "Delivered",
   cancelled: "Cancelled",
   refunded: "Refunded",
@@ -89,8 +89,8 @@ export const STATUS_LABEL: Record<OrderStatus, string> = {
 const STATUS_STYLE: Record<OrderStatus, string> = {
   pending: "bg-muted text-muted-foreground",
   paid: "bg-secondary text-secondary-foreground",
-  preparing: "bg-accent text-accent-foreground",
-  out_for_delivery: "bg-chart-3/30 text-foreground",
+  preparing: "bg-secondary text-secondary-foreground",
+  out_for_delivery: "bg-secondary text-secondary-foreground",
   delivered: "bg-primary text-primary-foreground",
   cancelled: "bg-destructive/15 text-destructive",
   refunded: "bg-destructive/15 text-destructive",

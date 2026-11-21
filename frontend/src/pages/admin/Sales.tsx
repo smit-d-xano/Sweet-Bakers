@@ -60,8 +60,8 @@ export function AdminOrders() {
 
 const NEXT: Record<string, string[]> = {
   pending: ["cancelled"],
-  paid: ["preparing", "cancelled"],
-  preparing: ["out_for_delivery", "delivered", "cancelled"],
+  paid: ["delivered", "cancelled"],
+  preparing: ["delivered", "cancelled"],
   out_for_delivery: ["delivered"],
 };
 
