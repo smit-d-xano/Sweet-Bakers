@@ -28,8 +28,32 @@ export default function Home() {
             </Button>
           </div>
         </div>
-        <img src="/hero.svg" alt="A frosted chocolate cake and fresh bread" className="w-full rounded-3xl" />
+        <div className="relative">
+          <img src="/hero.svg" alt="A frosted chocolate cake and fresh bread" className="w-full rounded-3xl" />
+          {[
+            { e: "🧁", cls: "left-2 top-4 text-4xl", d: "0s" },
+            { e: "🥐", cls: "right-3 top-10 text-4xl", d: "0.8s" },
+            { e: "🍪", cls: "bottom-6 left-6 text-3xl", d: "1.6s" },
+            { e: "🍰", cls: "bottom-4 right-6 text-4xl", d: "2.4s" },
+          ].map((t) => (
+            <span key={t.e} aria-hidden className={`float-treat pointer-events-none absolute drop-shadow ${t.cls}`} style={{ animationDelay: t.d }}>
+              {t.e}
+            </span>
+          ))}
+        </div>
       </section>
+
+      <div className="ticker overflow-hidden rounded-full bg-primary py-2 text-primary-foreground" aria-hidden>
+        <div className="ticker-track flex w-max gap-10 whitespace-nowrap text-sm font-medium">
+          {Array.from({ length: 2 }).map((_, i) => (
+            <div key={i} className="flex gap-10">
+              {["🧁 Fresh every morning", "🎂 Custom celebration cakes", "🥖 Slow-fermented breads", "🍪 Warm cookies", "🥐 Buttery pastries", "💳 Secure online payment"].map((t) => (
+                <span key={t}>{t}</span>
+              ))}
+            </div>
+          ))}
+        </div>
+      </div>
 
       {loading && <Loading rows={4} />}
       {error && <ErrorState message={error} onRetry={reload} />}

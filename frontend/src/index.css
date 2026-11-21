@@ -88,3 +88,18 @@
     font-family: var(--font-display);
   }
 }
+
+@keyframes float-treat {
+  0%, 100% { transform: translateY(0) rotate(-6deg); }
+  50% { transform: translateY(-14px) rotate(8deg); }
+}
+@keyframes ticker {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+.float-treat { animation: float-treat 3.6s ease-in-out infinite; }
+.ticker-track { animation: ticker 28s linear infinite; }
+.ticker:hover .ticker-track { animation-play-state: paused; }
+@media (prefers-reduced-motion: reduce) {
+  .float-treat, .ticker-track { animation: none; }
+}
