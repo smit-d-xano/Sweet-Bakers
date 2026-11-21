@@ -24,7 +24,8 @@ export default function AuthPage({ mode }: { mode: "login" | "signup" }) {
     setError("");
     try {
       const u = mode === "login" ? await login(email, password) : await signup({ name, email, password, phone });
-      navigate(u.role === "admin" && next === "/" ? "/admin" : next, { replace: true });
+      const dest = u.role === "admin" ? (next === "/" ? "/admin" : next) : next.startsWith("/admin") ? "/" : next;
+      navigate(dest, { replace: true });
     } catch (err) {
       setError(err instanceof Error ? err.message : "Something went wrong.");
     } finally {
