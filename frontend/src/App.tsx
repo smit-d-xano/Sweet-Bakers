@@ -11,7 +11,6 @@ import Cart from "@/pages/Cart";
 import Checkout from "@/pages/Checkout";
 import { CheckoutResult, DemoPay } from "@/pages/Pay";
 import AuthPage from "@/pages/Auth";
-import { ForgotPassword, ResetPassword } from "@/pages/PasswordReset";
 import Account, { OrderDetail } from "@/pages/Account";
 import { AdminLayout } from "@/pages/admin/AdminLayout";
 import Dashboard from "@/pages/admin/Dashboard";
@@ -54,8 +53,6 @@ export default function App() {
               <Route path="pay/demo/:orderNumber" element={<DemoPay />} />
               <Route path="login" element={<AuthPage mode="login" />} />
               <Route path="signup" element={<AuthPage mode="signup" />} />
-              <Route path="forgot-password" element={<ForgotPassword />} />
-              <Route path="reset-password" element={<ResetPassword />} />
               <Route element={<RequireUser />}>
                 <Route path="account" element={<Account />} />
                 <Route path="account/orders/:orderNumber" element={<OrderDetail />} />

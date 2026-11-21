@@ -145,8 +145,6 @@ export const api = {
   signup: (b: { name: string; email: string; password: string; phone?: string }) => call<{ token: string; user: User }>("POST auth/signup", { body: b }),
   login: (b: { email: string; password: string }) => call<{ token: string; user: User }>("POST auth/login", { body: b }),
   me: () => call<User>("GET auth/me"),
-  forgotPassword: (b: { email: string }) => call<{ ok: boolean; reset_token: string }>("POST auth/forgot_password", { body: b }),
-  resetPassword: (b: { token: string; password: string }) => call<{ ok: boolean }>("POST auth/reset_password", { body: b }),
   updateProfile: (b: { name: string; phone: string }) => call<User>("PUT profile", { body: b }),
   // catalogue
   config: () => call<StoreConfig>("GET store/config"),

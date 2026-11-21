@@ -55,11 +55,6 @@ export default function AuthPage({ mode }: { mode: "login" | "signup" }) {
             autoComplete={mode === "login" ? "current-password" : "new-password"}
           />
         </Field>
-        {mode === "login" && (
-          <div className="-mt-2 text-right text-sm">
-            <Link to="/forgot-password" className="text-primary underline">Forgot password?</Link>
-          </div>
-        )}
         {mode === "signup" && (
           <Field label="Phone (optional)" htmlFor="au-phone">
             <Input id="au-phone" type="tel" value={phone} onChange={(e) => setPhone(e.target.value)} autoComplete="tel" />

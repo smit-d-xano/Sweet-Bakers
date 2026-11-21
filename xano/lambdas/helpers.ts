@@ -77,12 +77,5 @@ export default function ({ $var }: { $var: Any }) {
     rows.sort((a, b) => b.total_spent - a.total_spent);
     return { rows };
   }
-  if ($var.op === "reset_email") {
-    const link = `${String($var.base_url).replace(/\/+$/, "")}/reset-password?token=${$var.reset_token}`;
-    return {
-      subject: "Reset your SweetBakers password",
-      message: `<h2>Hi ${$var.user.name},</h2><p>We got a request to reset your password. This link works for one hour:</p><p><a href="${link}">Choose a new password</a></p><p>If this wasn't you, you can ignore this email.</p><p>With love, SweetBakers</p>`,
-    };
-  }
   return {};
 }
