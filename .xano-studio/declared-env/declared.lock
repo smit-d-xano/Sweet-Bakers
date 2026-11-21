@@ -32,9 +32,6 @@
     "dbo:orders": {
       "guid": "a56803538ed253f160c1c9d085d8c312"
     },
-    "dbo:password_resets": {
-      "guid": "f81c39d9b8e1cb0deacb76a06bda249d"
-    },
     "dbo:payments": {
       "guid": "3f6126ddea140670b4f6ab1d2a412b74"
     },
@@ -85,6 +82,9 @@
     },
     "query:sweetbakers_admin|GET|admin/coupons": {
       "guid": "999e16a20ad8fb7322e22195e51fb3b5"
+    },
+    "query:sweetbakers_admin|GET|admin/customers": {
+      "guid": "dc85a2b5f570f9662e6a1c3d040853fd"
     },
     "query:sweetbakers_admin|GET|admin/dashboard/summary": {
       "guid": "6ae065478bc3356d335d5a6e9ae953ef"
@@ -182,14 +182,8 @@
     "query:sweetbakers|POST|addresses": {
       "guid": "d8f2d556cd525f00c9cfb00d38f85755"
     },
-    "query:sweetbakers|POST|auth/forgot_password": {
-      "guid": "e4335fabe69ca4f345306e0e01f588e9"
-    },
     "query:sweetbakers|POST|auth/login": {
       "guid": "6db5154fecd283aa23f2bbcb452e894c"
-    },
-    "query:sweetbakers|POST|auth/reset_password": {
-      "guid": "457f68bdd460594c5c1e76142fe38e66"
     },
     "query:sweetbakers|POST|auth/signup": {
       "guid": "9cb22ad2e1699253e5f21e96d30d802e"
