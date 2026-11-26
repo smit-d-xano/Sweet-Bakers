@@ -210,6 +210,26 @@ export function routePath(name: RouteName, params?: Record<string, string | numb
 }
 
 /**
+ * An endpoint's absolute URL: the backend's base URL + `path` (what
+ * `routePath` returns). Fetch this, not a bare `routePath`: on a published
+ * static site a `/api:` path is the site's own, and it answers with its
+ * `index.html`.
+ *
+ *   fetch(routeUrl(routePath("GET notes/{id}", { id })))
+ *
+ * The base is `baseUrl` when given, else `XANO_HOST`, which every static
+ * publish injects as `window.XANO_HOST`. With neither (a dev server that
+ * proxies `/api:` to the backend), `path` is returned unchanged. A
+ * `/tenant/<name>` base keeps its prefix. An absolute `path` is returned as is.
+ */
+export function routeUrl(path: string, baseUrl?: string): string {
+  if (/^[a-z][a-z0-9+.-]*:\/\//i.test(path)) return path;
+  const injected = (globalThis as { XANO_HOST?: unknown }).XANO_HOST;
+  const base = (baseUrl ?? (typeof injected === "string" ? injected : "")).trim().replace(/\/+$/, "");
+  return base === "" ? path : base + (path.startsWith("/") ? path : `/${path}`);
+}
+
+/**
  * The GET query string for a route's inputs, without the leading "?" —
  * `routePath(name, params) + "?" + routeQuery(name, input)`. The same encoding
  * as the SDK's `query.toSearchParams`, inlined so a frontend needs no SDK
